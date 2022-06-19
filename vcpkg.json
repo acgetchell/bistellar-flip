@@ -1,0 +1,10 @@
+{
+  "name": "bistellar-flip",
+  "version": "0.0.1",
+  "dependencies": [
+    "doctest",
+    "fmt",
+    "tbb",
+    "cgal"
+  ]
+}
