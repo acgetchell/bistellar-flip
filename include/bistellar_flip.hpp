@@ -30,7 +30,7 @@ using Cell_container   = std::vector<Cell_handle>;
 using Edge_container   = std::vector<Edge_handle>;
 using Vertex_container = std::vector<Vertex_handle>;
 
-/// @return A container of all the cells in the triangulation.
+/// @return A container of all the finite cells in the triangulation.
 [[nodiscard]] inline auto get_finite_cells(Delaunay const& triangulation)
     -> Cell_container
 {
@@ -45,6 +45,7 @@ using Vertex_container = std::vector<Vertex_handle>;
   return cells;
 }  // get_finite_cells
 
+/// @return A container of all the finite edges in the triangulation.
 [[nodiscard]] inline auto get_finite_edges(Delaunay const& triangulation)
     -> Edge_container
 {

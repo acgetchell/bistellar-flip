@@ -8,11 +8,9 @@
 
 #include <doctest/doctest.h>
 
-#include <concepts>
 #include <numbers>
 
-static inline std::floating_point auto constexpr SQRT_2 =
-    std::numbers::sqrt2_v<double>;
+static inline auto constexpr SQRT_2     = std::numbers::sqrt2_v<double>;
 static inline auto constexpr INV_SQRT_2 = 1.0 / SQRT_2;
 
 SCENARIO("Test Delaunay triangulation convenience functions")

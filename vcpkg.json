@@ -5,6 +5,10 @@
     "doctest",
     "fmt",
     "tbb",
+    {
+      "name": "yasm-tool",
+      "platform": "windows"
+    },
     "cgal"
   ]
 }
