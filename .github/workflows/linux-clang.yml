@@ -1,20 +1,27 @@
-name: macOS
+name: Linux Clang
 
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          submodules: false
+          submodules: true
+
+      - name: Setup Clang
+        uses: egor-tensin/setup-clang@v1
+        with:
+          version: 13
+          platform: x64
 
       - name: Setup
         run: |
-          brew install automake autoconf autoconf-archive libtool texinfo yasm ninja python ccache
+          sudo apt update
+          sudo apt-get install build-essential automake autoconf autoconf-archive texinfo libtool-bin yasm ninja-build ccache
       - name: Restore artifacts, or setup vcpkg
         uses: lukka/run-vcpkg@v10
         with:
