@@ -17,6 +17,8 @@
 #include <CGAL/Triangulation_vertex_base_with_info_3.h>
 #include <fmt/format.h>
 
+#include <optional>
+
 using K   = CGAL::Exact_predicates_inexact_constructions_kernel;
 using Vb  = CGAL::Triangulation_vertex_base_with_info_3<int, K>;
 using Cb  = CGAL::Triangulation_cell_base_with_info_3<int, K>;
@@ -62,5 +64,27 @@ using Vertex_container = std::vector<Vertex_handle>;
   }
   return edges;
 }  // get_finite_edges
+
+/// @return An edge with 4 incident finite cells
+[[nodiscard]] inline auto find_pivot_edge(Delaunay const&       triangulation,
+                                          Edge_container const& edges)
+    -> std::optional<Edge_handle>
+{
+  for (auto const& edge : edges)
+  {
+    auto           circulator = triangulation.incident_cells(edge, edge.first);
+    Cell_container incident_cells;
+    do {
+      // filter out boundary edges with incident infinite cells
+      if (!triangulation.is_infinite(circulator))
+      {
+        incident_cells.emplace_back(circulator);
+      }
+    }
+    while (++circulator != edge.first);
+    if (incident_cells.size() == 4) { return edge; }
+  }
+  return std::nullopt;
+}  // find_pivot_edge
 
 #endif  // BISTELLAR_FLIP_BISTELLAR_FLIP_HPP
