@@ -63,3 +63,44 @@ SCENARIO("Test Delaunay triangulation convenience functions" *
     }
   }
 }
+
+SCENARIO("Perform bistellar flip on Delaunay triangulation" *
+         doctest::test_suite("bistellar"))
+{
+  GIVEN("A valid Delaunay triangulation")
+  {
+    // Create a Delaunay triangulation
+    std::vector<Point> points{
+        Point{          0,           0,          0},
+        Point{ INV_SQRT_2,           0, INV_SQRT_2},
+        Point{          0,  INV_SQRT_2,          0},
+        Point{-INV_SQRT_2,           0, INV_SQRT_2},
+        Point{          0, -INV_SQRT_2, INV_SQRT_2},
+        Point{          0,           0,          2}
+    };
+    Delaunay triangulation(points.begin(), points.end());
+    CHECK(triangulation.is_valid());
+    WHEN("We find the pivot edge in the triangulation")
+    {
+      auto pivot_edge =
+          find_pivot_edge(triangulation, get_finite_edges(triangulation));
+      THEN("We have a pivot edge")
+      {
+        CHECK_MESSAGE(pivot_edge, "Pivot edge found");
+      }
+      THEN("We can perform a bistellar flip")
+      {
+        // Obtain top and bottom vertices by re-inserting, which returns the
+        // Vertex_handle
+        auto top    = triangulation.insert(Point(0, 0, 2));
+        auto bottom = triangulation.insert(Point(0, 0, 0));
+        // Check this didn't actually change vertices in the triangulation
+        REQUIRE_EQ(points.size(), 6);
+        auto flipped_triangulation =
+            bistellar_flip(triangulation, pivot_edge.value(), top, bottom);
+        REQUIRE(flipped_triangulation);
+        REQUIRE(flipped_triangulation->is_valid());
+      }
+    }
+  }
+}

@@ -87,4 +87,20 @@ using Vertex_container = std::vector<Vertex_handle>;
   return std::nullopt;
 }  // find_pivot_edge
 
+/// @brief Perform a bistellar flip on triangulation via the given edge
+/// @param triangulation The triangulation to flip
+/// @param edge The edge to pivot on
+/// @param top Top vertex of the cells being flipped
+/// @param bottom Bottom vertex of the cells being flipped
+/// @return A flipped triangulation if successful
+[[nodiscard]] inline auto bistellar_flip(Delaunay&            triangulation,
+                                         Edge_handle const&   edge,
+                                         Vertex_handle const& top,
+                                         Vertex_handle const& bottom)
+    -> std::optional<Delaunay>
+{
+  // Test stub
+  return triangulation;
+}  // bistellar_flip
+
 #endif  // BISTELLAR_FLIP_BISTELLAR_FLIP_HPP
