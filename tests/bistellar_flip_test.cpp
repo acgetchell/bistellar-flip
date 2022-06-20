@@ -8,6 +8,7 @@
 
 #include <doctest/doctest.h>
 
+#include <concepts>
 #include <numbers>
 
 static inline std::floating_point auto constexpr SQRT_2 =
