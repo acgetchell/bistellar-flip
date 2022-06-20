@@ -46,5 +46,10 @@ find_package(CGAL CONFIG REQUIRED)
 # Header files
 include_directories(BEFORE ${PROJECT_SOURCE_DIR}/include)
 
+# doctest
+enable_testing()
+message(STATUS "Building tests. Look at /tests for unit tests.")
+add_subdirectory(tests)
+
 # Source files
 add_subdirectory(src)

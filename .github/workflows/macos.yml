@@ -1,0 +1,29 @@
+name: macOS
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          submodules: false
+
+      - name: Setup
+        run: |
+          brew install automake autoconf autoconf-archive libtool texinfo yasm ninja python ccache
+      - name: Restore artifacts, or setup vcpkg
+        uses: lukka/run-vcpkg@v10
+        with:
+          vcpkgGitCommitId: b49b2bdf22559c89eddbf29a29621a1dc6929320
+
+      - name: Install vcpkg packages and configure CMake
+        shell: bash
+        run: |
+          vcpkg install
+          cmake -G Ninja -D CMAKE_BUILD_TYPE=RelWithDebInfo -S . -B build
+      - name: Build
+        run: cmake --build build
