@@ -14,7 +14,7 @@ static inline auto constexpr SQRT_2     = std::numbers::sqrt2_v<double>;
 static inline auto constexpr INV_SQRT_2 = 1.0 / SQRT_2;
 
 SCENARIO("Test Delaunay triangulation convenience functions" *
-         doctest::test_suite("bistellar"))
+         doctest::test_suite("bistellar_flip"))
 {
   GIVEN("A valid Delaunay triangulation")
   {
@@ -61,11 +61,19 @@ SCENARIO("Test Delaunay triangulation convenience functions" *
         REQUIRE(Contains(pivot_from_2));
       }
     }
+    WHEN("We get all finite vertices in the triangulation")
+    {
+      THEN("We have 6 vertices")
+      {
+        auto vertices = get_finite_vertices(triangulation);
+        REQUIRE_EQ(vertices.size(), 6);
+      }
+    }
   }
 }
 
 SCENARIO("Perform bistellar flip on Delaunay triangulation" *
-         doctest::test_suite("bistellar"))
+         doctest::test_suite("bistellar_flip"))
 {
   GIVEN("A valid Delaunay triangulation")
   {
@@ -87,6 +95,7 @@ SCENARIO("Perform bistellar flip on Delaunay triangulation" *
       THEN("We have a pivot edge")
       {
         CHECK_MESSAGE(pivot_edge, "Pivot edge found");
+        print_edge(pivot_edge.value());
       }
       THEN("We can perform a bistellar flip")
       {

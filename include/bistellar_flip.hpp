@@ -17,7 +17,10 @@
 #include <CGAL/Triangulation_vertex_base_with_info_3.h>
 #include <fmt/format.h>
 
+#include <iostream>
 #include <optional>
+#include <sstream>
+#include <string>
 
 using K   = CGAL::Exact_predicates_inexact_constructions_kernel;
 using Vb  = CGAL::Triangulation_vertex_base_with_info_3<int, K>;
@@ -45,7 +48,7 @@ using Vertex_container = std::vector<Vertex_handle>;
     cells.emplace_back(cit);
   }
   return cells;
-}  // get_finite_cells
+}  // get_finite_cells()
 
 /// @return A container of all the finite edges in the triangulation.
 [[nodiscard]] inline auto get_finite_edges(Delaunay const& triangulation)
@@ -63,7 +66,7 @@ using Vertex_container = std::vector<Vertex_handle>;
     edges.emplace_back(edge);
   }
   return edges;
-}  // get_finite_edges
+}  // get_finite_edges()
 
 /// @return An edge with 4 incident finite cells
 [[nodiscard]] inline auto find_pivot_edge(Delaunay const&       triangulation,
@@ -85,7 +88,33 @@ using Vertex_container = std::vector<Vertex_handle>;
     if (incident_cells.size() == 4) { return edge; }
   }
   return std::nullopt;
-}  // find_pivot_edge
+}  // find_pivot_edge()
+
+/// @return A container of all finite vertices in the triangulation.
+[[nodiscard]] inline auto get_finite_vertices(Delaunay const& triangulation)
+    -> Vertex_container
+{
+  Vertex_container vertices;
+  for (auto vit = triangulation.finite_vertices_begin();
+       vit != triangulation.finite_vertices_end(); ++vit)
+  {
+    assert(triangulation.tds().is_vertex(vit));
+    vertices.emplace_back(vit);
+  }
+  return vertices;
+}  // get_finite_vertices()
+
+inline void print_edge(Edge_handle const& edge)
+{
+  auto              Point1 = edge.first->vertex(edge.second)->point();
+  std::stringstream point1_ss;
+  point1_ss << Point1;
+  auto              Point2 = edge.first->vertex(edge.third)->point();
+  std::stringstream point2_ss;
+  point2_ss << Point2;
+  fmt::print("Point {} ({}) -> Point {} ({})\n", edge.second, point1_ss.str(),
+             edge.third, point2_ss.str());
+}  // print_edge()
 
 /// @brief Perform a bistellar flip on triangulation via the given edge
 /// @param triangulation The triangulation to flip
