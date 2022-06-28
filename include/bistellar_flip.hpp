@@ -230,6 +230,11 @@ inline void print_edge(Edge_handle const& edge)
     return std::nullopt;
   }
 
+#ifndef NDEBUG
+  fmt::print("Cells in the triangulation before deleting old cells: {}\n",
+             triangulation.number_of_cells());
+#endif
+
   // Now find the exterior neighbors of the cells
   Cell_handle n_1 = before_1->neighbor(before_1->index(pivot_from_2));
   Cell_handle n_2 = before_1->neighbor(before_1->index(pivot_from_1));
@@ -246,8 +251,10 @@ inline void print_edge(Edge_handle const& edge)
   triangulation.tds().delete_cell(before_3);
   triangulation.tds().delete_cell(before_4);
 
+#ifndef NDEBUG
   fmt::print("Cells in the triangulation after deleting old cells: {}\n",
              triangulation.number_of_cells());
+#endif
 
   // Now create the new cells
   Cell_handle a_1 = triangulation.tds().create_cell(top, pivot_from_1,
@@ -265,11 +272,17 @@ inline void print_edge(Edge_handle const& edge)
   a_3->set_neighbors(n_5, n_8, a_4, a_1);
   a_4->set_neighbors(n_6, n_7, a_2, a_3);
 
+#ifndef NDEBUG
   fmt::print("Cells in the triangulation after adding new cells: {}\n",
              triangulation.number_of_cells());
+#endif
 
   // Fix any cell orientation issues
   if (!triangulation.is_valid()) { triangulation.tds().reorient(); }
+
+#ifndef NDEBUG
+  triangulation.tds().is_valid(true, 1);
+#endif
 
   // Check validity of cells
   if (a_1->is_valid() && a_2->is_valid() && a_3->is_valid() && a_4->is_valid())
