@@ -92,10 +92,22 @@ SCENARIO("Perform bistellar flip on Delaunay triangulation" *
     {
       auto pivot_edge =
           find_pivot_edge(triangulation, get_finite_edges(triangulation));
+      auto incident_cells =
+          get_incident_cells(triangulation, pivot_edge.value());
       THEN("We have a pivot edge")
       {
-        CHECK_MESSAGE(pivot_edge, "Pivot edge found");
+        REQUIRE_MESSAGE(pivot_edge, "Pivot edge not found");
+        fmt::print("Pivot edge:\n");
         print_edge(pivot_edge.value());
+      }
+      THEN("We can obtain the cells incident to that edge")
+      {
+        REQUIRE_EQ(incident_cells->size(), 4);
+      }
+      THEN("We can obtain the vertices from the cells incident to that edge")
+      {
+        auto vertices = get_vertices_from_cells(incident_cells.value());
+        REQUIRE_EQ(vertices.size(), 6);
       }
       THEN("We can perform a bistellar flip")
       {
