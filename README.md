@@ -71,11 +71,18 @@ operate on individual cells and would be useful if exposed).
 There are several helper functions which take a (Delaunay) triangulation as an argument,
 but would be probably be better implemented and exposed in the [Triangulation_data_structure].
 
-These functions return [std::optional] as a result is not necessarily guaranteed.
+- [get_finite_cells]
+- [get_finite_edges]
 
-It might be useful to return as [expected] whenever that is widely available.
+Returning [ranges] instead of containers would also be useful.
 
-Returning [ranges] would also be useful instead of using iterators.
+These functions return [std::optional] as a result is not necessarily guaranteed:
+
+- [find_pivot_edge]
+- [get_incident_cells]
+- [bistellar_flip]
+
+It might be useful to return as [std::expected<T,E>] whenever that is widely available.
 
 [CGAL]: https://www.cgal.org/
 [Triangulation_data_structure]: https://doc.cgal.org/latest/TDS_3/index.html
@@ -83,5 +90,14 @@ Returning [ranges] would also be useful instead of using iterators.
 [reorient]: https://doc.cgal.org/latest/TDS_3/classTriangulationDataStructure__3.html#af501f165455a2411543d6ec2542fea8d
 [change_orientation]: https://github.com/CGAL/cgal/blob/8430d04539179f25fb8e716f99e19d28589beeda/TDS_3/include/CGAL/Triangulation_data_structure_3.h#L1666
 [std::optional]: https://en.cppreference.com/w/cpp/utility/optional
-[expected]: https://en.cppreference.com/w/cpp/header/expected
+[std::expected<T,E>]: https://en.cppreference.com/w/cpp/header/expected
 [ranges]: https://en.cppreference.com/w/cpp/ranges
+[find_pivot_edge]: https://github.com/acgetchell/bistellar-flip/blob/master/include/bistellar_flip.hpp#L72
+[get_incident_cells]: https://github.com/acgetchell/bistellar-flip/blob/master/include/bistellar_flip.hpp#L125
+[bistellar_flip]: https://github.com/acgetchell/bistellar-flip/blob/master/include/bistellar_flip.hpp#L167
+[get_finite_cells]: https://github.com/acgetchell/bistellar-flip/blob/master/include/bistellar_flip.hpp#L39
+[get_finite_edges]: https://github.com/acgetchell/bistellar-flip/blob/master/include/bistellar_flip.hpp#L54
+
+
+
+

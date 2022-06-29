@@ -1,5 +1,5 @@
 /// @file bistellar.cpp
-/// @brief Example bistellar fip
+/// @brief Example bistellar flip
 /// @author Adam Getchell
 /// @details Show how to use the bistellar_flip functions on a 3D triangulation.
 /// Some convenience functions are defined here because the internal
@@ -142,12 +142,12 @@ inline void print_edge(Edge_handle const& edge)
   while (++circulator != edge.first);
 
   return incident_cells;
-}  // incident_cells_from_edge()
+}  // get_incident_cells()
 
 /// @brief Return a container of vertices from a container of cells.
 /// @param cells The container of cells.
 /// @return A container of vertices in the cells
-[[nodiscard]] auto get_vertices_from_cells(Cell_container const& cells)
+[[nodiscard]] auto get_vertices(Cell_container const& cells)
 {
   std::unordered_set<Vertex_handle> vertices;
   auto get_vertices = [&vertices](auto const& cell) {
@@ -156,7 +156,7 @@ inline void print_edge(Edge_handle const& edge)
   std::for_each(cells.begin(), cells.end(), get_vertices);
   Vertex_container result{vertices.begin(), vertices.end()};
   return result;
-}  // get_vertices_from_cells()
+}  // get_vertices()
 
 /// @brief Perform a bistellar flip on triangulation via the given edge
 /// @param triangulation The triangulation to flip
@@ -187,7 +187,7 @@ inline void print_edge(Edge_handle const& edge)
   auto const& pivot_from_2 = edge.first->vertex(edge.third);
 
   // Get vertices from cells
-  auto vertices            = get_vertices_from_cells(incident_cells.value());
+  auto vertices            = get_vertices(incident_cells.value());
 
   // Get vertices for new pivot edge
   Vertex_container new_pivot_vertices;

@@ -106,7 +106,7 @@ SCENARIO("Perform bistellar flip on Delaunay triangulation" *
       }
       THEN("We can obtain the vertices from the cells incident to that edge")
       {
-        auto vertices = get_vertices_from_cells(incident_cells.value());
+        auto vertices = get_vertices(incident_cells.value());
         REQUIRE_EQ(vertices.size(), 6);
       }
       THEN("We can perform a bistellar flip")
