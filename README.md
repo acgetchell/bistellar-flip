@@ -66,6 +66,17 @@ could be done on just the cell complex, but [reorient] is called on the entire t
 and is currently implemented in terms of the local function [change_orientation], which does
 operate on individual cells and would be useful if exposed).
 
+## Algorithm
+
+    1. Obtain the pivot edge.
+    2. Obtain the two vertices comprising the pivot edge.
+    3. Obtain the 4 remaining vertices of the 6 vertices in the 4-cell complex.
+    4. Obtain the new pivot edge.
+    5. Obtaining the 8 neighboring cells of the 4-cell complex.
+    6. Delete the old 4-cell complex.
+    7. Create the 4 new cells using the same 6 vertices.
+    8. Assign the 8 neighboring cells to the new 4-cell complex.
+
 ## Implementation
 
 There are several helper functions which take a (Delaunay) triangulation as an argument,
@@ -97,7 +108,3 @@ It might be useful to return as [std::expected<T,E>] whenever that is widely ava
 [bistellar_flip]: https://github.com/acgetchell/bistellar-flip/blob/master/include/bistellar_flip.hpp#L167
 [get_finite_cells]: https://github.com/acgetchell/bistellar-flip/blob/master/include/bistellar_flip.hpp#L39
 [get_finite_edges]: https://github.com/acgetchell/bistellar-flip/blob/master/include/bistellar_flip.hpp#L54
-
-
-
-
