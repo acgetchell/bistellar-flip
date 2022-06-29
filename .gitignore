@@ -4,3 +4,4 @@ cmake-build-relwithdebinfo/*
 .idea/*
 vcpkg_installed/*
 build/*
+*DS_Store*
