@@ -257,20 +257,20 @@ inline void print_edge(Edge_handle const& edge)
 #endif
 
   // Now create the new cells
-  Cell_handle a_1 = triangulation.tds().create_cell(top, pivot_from_1,
-                                                    pivot_to_1, pivot_to_2);
-  Cell_handle a_2 = triangulation.tds().create_cell(top, pivot_from_2,
-                                                    pivot_to_1, pivot_to_2);
-  Cell_handle a_3 = triangulation.tds().create_cell(bottom, pivot_from_1,
-                                                    pivot_to_1, pivot_to_2);
-  Cell_handle a_4 = triangulation.tds().create_cell(bottom, pivot_from_2,
-                                                    pivot_to_1, pivot_to_2);
+  Cell_handle after_1 = triangulation.tds().create_cell(top, pivot_from_1,
+                                                        pivot_to_1, pivot_to_2);
+  Cell_handle after_2 = triangulation.tds().create_cell(top, pivot_from_2,
+                                                        pivot_to_1, pivot_to_2);
+  Cell_handle after_3 = triangulation.tds().create_cell(bottom, pivot_from_1,
+                                                        pivot_to_1, pivot_to_2);
+  Cell_handle after_4 = triangulation.tds().create_cell(bottom, pivot_from_2,
+                                                        pivot_to_1, pivot_to_2);
 
   // Now set the neighbors of the new cells
-  a_1->set_neighbors(n_1, n_4, a_2, a_3);
-  a_2->set_neighbors(n_2, n_3, a_1, a_4);
-  a_3->set_neighbors(n_5, n_8, a_4, a_1);
-  a_4->set_neighbors(n_6, n_7, a_2, a_3);
+  after_1->set_neighbors(n_1, n_4, after_2, after_3);
+  after_2->set_neighbors(n_2, n_3, after_1, after_4);
+  after_3->set_neighbors(n_5, n_8, after_4, after_1);
+  after_4->set_neighbors(n_6, n_7, after_2, after_3);
 
 #ifndef NDEBUG
   fmt::print("Cells in the triangulation after adding new cells: {}\n",
@@ -285,7 +285,8 @@ inline void print_edge(Edge_handle const& edge)
 #endif
 
   // Check validity of cells
-  if (a_1->is_valid() && a_2->is_valid() && a_3->is_valid() && a_4->is_valid())
+  if (after_1->is_valid() && after_2->is_valid() && after_3->is_valid() &&
+      after_4->is_valid())
   {
     return std::make_optional(triangulation);
   }
