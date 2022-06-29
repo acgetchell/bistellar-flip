@@ -69,7 +69,7 @@ operate on individual cells and would be useful if exposed).
 ## Algorithm
 
     1. Obtain the pivot edge.
-    2. Obtain the two vertices comprising the pivot edge.
+    2. Obtain the 2 vertices comprising the pivot edge.
     3. Obtain the 4 remaining vertices of the 6 vertices in the 4-cell complex.
     4. Obtain the new pivot edge.
     5. Obtain the 8 neighboring cells of the 4-cell complex.
