@@ -74,7 +74,7 @@ operate on individual cells and would be useful if exposed).
     4. Obtain the new pivot edge.
     5. Obtain the 8 neighboring cells of the 4-cell complex.
     6. Delete the old 4-cell complex.
-    7. Create the 4 new cells using the same 6 vertices.
+    7. Create the new 4-cell complex using the same 6 vertices.
     8. Assign the 8 neighboring cells to the new 4-cell complex.
 
 ## Implementation
