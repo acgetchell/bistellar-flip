@@ -1,13 +1,13 @@
 # bistellar-flip
 
-Bistellar flip proposal for CGAL.
+Bistellar flip proposal for [CGAL].
 
 ## Description
 
-A bistellar flip operates on 4 cells in a 3-dimensional triangulation.
+A bistellar flip operates on 4 cells in a 3-dimensional [Triangulation_data_structure].
 
-The *pivot edge* is the edge that is common to all 4 cells. It's endpoints are
-*Pivot_from_1* and *Pivot_from_2*.
+The *pivot edge* is the edge that is common to all 4 cells (obtained via a [Circulator]).
+It's endpoints are *Pivot_from_1* and *Pivot_from_2*.
 
 The *new pivot edge* is the edge that will be common to the 4 new cells.
 It's endpoints are *Pivot_to_1* and *Pivot_to_2*, obtained by selecting the 2 vertices
@@ -35,7 +35,7 @@ And here are the 4 new cells:
 | **after_4**  | *Bottom*, *Pivot_from_2*, *Pivot_to_1*, *Pivot_to_2* |
 
 We also must obtain the neighbors of the 4 old cells, and assign them appropriately to the 4 new cells.
-CGAL indicates neighbors by a cell and the index of the vertex opposite the neighboring cell.
+[CGAL] indicates neighbors by a cell and the index of the vertex opposite the neighboring cell.
 The four cells form an octohedron, so there are 8 neighbors, as follows:
 
 | Neighboring cell | Cell         | Vertex opposite |
@@ -57,3 +57,31 @@ We then assign neighbors to the 4 new cells:
 | **after_2** | **n_2**, **n_3**, **after_1**, **after_4** |
 | **after_3** | **n_5**, **n_8**, **after_1**, **after_4** |
 | **after_4** | **n_6**, **n_7**, **after_2**, **after_3** |
+
+The assignment of neighbors to the new cells should complete the bistellar flip.
+
+The last thing to do is to check that there are no orientation issues in the new cells.
+If there are, *tds().reorient()* is called on the triangulation (would be nice if this
+could be done on just the cell complex, but [reorient] is called on the entire triangulation,
+and is currently implemented in terms of the local function [change_orientation], which does
+operate on individual cells and would be useful if exposed).
+
+## Implementation
+
+There are several helper functions which take a (Delaunay) triangulation as an argument,
+but would be probably be better implemented and exposed in the [Triangulation_data_structure].
+
+These functions return [std::optional] as a result is not necessarily guaranteed.
+
+It might be useful to return as [expected] whenever that is widely available.
+
+Returning [ranges] would also be useful instead of using iterators.
+
+[CGAL]: https://www.cgal.org/
+[Triangulation_data_structure]: https://doc.cgal.org/latest/TDS_3/index.html
+[Circulator]: https://doc.cgal.org/latest/Circulator/classCirculator.html
+[reorient]: https://doc.cgal.org/latest/TDS_3/classTriangulationDataStructure__3.html#af501f165455a2411543d6ec2542fea8d
+[change_orientation]: https://github.com/CGAL/cgal/blob/8430d04539179f25fb8e716f99e19d28589beeda/TDS_3/include/CGAL/Triangulation_data_structure_3.h#L1666
+[std::optional]: https://en.cppreference.com/w/cpp/utility/optional
+[expected]: https://en.cppreference.com/w/cpp/header/expected
+[ranges]: https://en.cppreference.com/w/cpp/ranges
