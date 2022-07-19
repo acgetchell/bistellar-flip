@@ -158,6 +158,14 @@ inline void print_edge(Edge_handle const& edge)
   return result;
 }  // get_vertices()
 
+[[nodiscard]] auto index_of_vertex_in_opposite_simplex(Delaunay& triangulation,
+                                                       Cell_handle cell,
+                                                       int         index) -> int
+{
+  //  auto neighboring_cell = cell->neighbor(index);
+  return triangulation.mirror_index(cell, index);
+}  // index_of_vertex_in_opposite_simplex()
+
 /// @brief Perform a bistellar flip on triangulation via the given edge
 /// @param triangulation The triangulation to flip
 /// @param edge The edge to pivot on
@@ -271,6 +279,32 @@ inline void print_edge(Edge_handle const& edge)
   after_2->set_neighbors(n_2, n_3, after_1, after_4);
   after_3->set_neighbors(n_5, n_8, after_4, after_1);
   after_4->set_neighbors(n_6, n_7, after_2, after_3);
+
+  // Now set the neighboring cells to the new cells
+  n_1->set_neighbor(n_1->index(triangulation.tds().mirror_vertex(
+                        after_1, after_1->index(pivot_to_2))),
+                    after_1);
+  n_2->set_neighbor(n_2->index(triangulation.tds().mirror_vertex(
+                        after_2, after_2->index(pivot_to_2))),
+                    after_2);
+  n_3->set_neighbor(n_3->index(triangulation.tds().mirror_vertex(
+                        after_2, after_2->index(pivot_to_1))),
+                    after_2);
+  n_4->set_neighbor(n_4->index(triangulation.tds().mirror_vertex(
+                        after_1, after_1->index(pivot_to_1))),
+                    after_1);
+  n_5->set_neighbor(n_5->index(triangulation.tds().mirror_vertex(
+                        after_3, after_3->index(pivot_to_2))),
+                    after_3);
+  n_6->set_neighbor(n_6->index(triangulation.tds().mirror_vertex(
+                        after_4, after_4->index(pivot_to_2))),
+                    after_4);
+  n_7->set_neighbor(n_7->index(triangulation.tds().mirror_vertex(
+                        after_4, after_4->index(pivot_to_1))),
+                    after_4);
+  n_8->set_neighbor(n_8->index(triangulation.tds().mirror_vertex(
+                        after_3, after_3->index(pivot_to_1))),
+                    after_3);
 
 #ifndef NDEBUG
   fmt::print("Cells in the triangulation after adding new cells: {}\n",

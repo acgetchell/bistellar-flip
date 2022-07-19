@@ -25,6 +25,16 @@ Here are the 4 old cells defined by the vertices labelled in the figure:
 | **before_3** | *Bottom*, *Pivot_from_1*, *Pivot_from_2*, *Pivot_to_1* |
 | **before_4** | *Bottom*, *Pivot_from_1*, *Pivot_from_2*, *Pivot_to_2* |
 
+We obtain these by querying vertex membership, e.g.:
+
+```cpp
+if (cell->has_vertex(top))
+{
+    if (cell->has_vertex(Pivot_to_1)) { before_1 = cell; }
+    else { before_2 = cell; }
+}
+```
+
 And here are the 4 new cells:
 
 | Cell         | Vertices                                             |
@@ -33,6 +43,12 @@ And here are the 4 new cells:
 | **after_2**  | *Top*, *Pivot_from_2*, *Pivot_to_1*, *Pivot_to_2*    |
 | **after_3**  | *Bottom*, *Pivot_from_1*, *Pivot_to_1*, *Pivot_to_2* |
 | **after_4**  | *Bottom*, *Pivot_from_2*, *Pivot_to_1*, *Pivot_to_2* |
+
+Creating **after_1**:
+
+```cpp
+Cell_handle after_1 = triangulation.tds().create_cell(top, Pivot_from_1, Pivot_to_1, Pivot_to_2);
+```
 
 We also must obtain the neighbors of the 4 old cells, and assign them appropriately to the 4 new cells.
 [CGAL] indicates neighbors by a cell and the index of the vertex opposite the neighboring cell.
@@ -49,6 +65,12 @@ The four cells form an octohedron, so there are 8 neighbors, as follows:
 | **n_7**          | **before_4** | *Pivot_from_1*  |
 | **n_8**          | **before_4** | *Pivot_from_2*  |
 
+Obtaining **n_1**:
+
+```cpp
+Cell_handle n_1 = before_1->neighbor(before_1->index(Pivot_from_2));
+```
+
 We then assign neighbors to the 4 new cells:
 
 | New cell    | Neighboring cells                          |
@@ -57,6 +79,38 @@ We then assign neighbors to the 4 new cells:
 | **after_2** | **n_2**, **n_3**, **after_1**, **after_4** |
 | **after_3** | **n_5**, **n_8**, **after_1**, **after_4** |
 | **after_4** | **n_6**, **n_7**, **after_2**, **after_3** |
+
+Setting neighbors for **after_1**:
+
+```cpp
+after_1->set_neighbors(n_1, n_4, after_2, after_3);
+```
+
+And finally, assign the 8 neighbors back to the new cells:
+
+| Neighboring cell | Cell        | Vertex opposite |
+|------------------|-------------|-----------------|
+| **n_1**          | **after_1** | *Pivot_to_2*    |
+| **n_2**          | **after_2** | *Pivot_to_2*    |
+| **n_3**          | **after_2** | *Pivot_to_1*    |
+| **n_4**          | **after_1** | *Pivot_to_1*    |
+| **n_5**          | **after_3** | *Pivot_to_2*    |
+| **n_6**          | **after_4** | *Pivot_to_2*    |
+| **n_7**          | **after_4** | *Pivot_to_1*    |
+| **n_8**          | **after_3** | *Pivot_to_1*    |
+
+Setting **n_1** to its new neighbor **after_1**:
+
+```cpp
+n_1->set_neighbor(n_1->index(triangulation.tds().mirror_vertex(
+                        after_1, after_1->index(pivot_to_2))),
+                    after_1);
+```
+Where:
+
+* ```set_neighbor(int n, Cell_handle c)``` sets the ```n```-th neighbor of the cell to ```c```
+* ```index(Vertex_handle v)``` returns the integer index of ```v``` in the cell
+* ```mirror_vertex(Cell_handle c, n)``` returns the vertex of the `n`-th neighbor of ```c```
 
 The assignment of neighbors to the new cells should complete the bistellar flip.
 
