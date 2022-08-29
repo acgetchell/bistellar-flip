@@ -122,7 +122,7 @@ SCENARIO("Perform bistellar flip on Delaunay triangulation" *
         REQUIRE(flipped_triangulation);
         /// FIXME: This fails because the triangulation is not valid any more
         /// neighbor of c has not c as neighbor
-        //        REQUIRE(flipped_triangulation->is_valid());
+        WARN(flipped_triangulation->is_valid());
       }
     }
   }
