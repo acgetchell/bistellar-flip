@@ -34,6 +34,9 @@ add_library(project_warnings INTERFACE)
 include(cmake/CompilerWarnings.cmake)
 set_project_warnings(project_warnings)
 
+# Static analysis
+include(cmake/StaticAnalyzers.cmake)
+
 # vcpkg dependencies
 
 # https://github.com/doctest/doctest

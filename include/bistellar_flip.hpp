@@ -185,9 +185,14 @@ inline void print_edge(Edge_handle const& edge)
   if (!incident_cells || incident_cells->size() != 4) { return std::nullopt; }
 
   // Check incident cells are valid
-  for (auto const& cell : incident_cells.value())
+//  for (auto const& cell : incident_cells.value())
+//  {
+//    if (!cell->is_valid()) { return std::nullopt; }
+//  }
+  if (std::any_of(incident_cells->begin(), incident_cells->end(),
+                  [](auto const& cell) { return !cell->is_valid(); }))
   {
-    if (!cell->is_valid()) { return std::nullopt; }
+    return std::nullopt;
   }
 
   // Get vertices from pivot edge

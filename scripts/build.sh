@@ -5,7 +5,7 @@
 
 cd ..
 rm -rf build/
-cmake -G Ninja -D CMAKE_BUILD_TYPE=RelWithDebInfo -S . -B build
+cmake -G Ninja -D CMAKE_BUILD_TYPE=RelWithDebInfo -D ENABLE_IPO=ON -S . -B build
 cmake --build build
 cd build/tests || exit
 ./bistellar_tests -s
