@@ -122,8 +122,8 @@ inline void print_edge(Edge_handle const& edge)
 /// @param triangulation The triangulation with the cells.
 /// @param edge The edge to find the incident cells.
 /// @return A container of cells incident to an edge, or std::nullopt
-[[nodiscard]] auto get_incident_cells(Delaunay const&    triangulation,
-                                      Edge_handle const& edge)
+[[nodiscard]] inline auto get_incident_cells(Delaunay const&    triangulation,
+                                             Edge_handle const& edge)
     -> std::optional<Cell_container>
 {
   if (!triangulation.tds().is_valid(edge.first, edge.second, edge.third))
@@ -147,7 +147,7 @@ inline void print_edge(Edge_handle const& edge)
 /// @brief Return a container of vertices from a container of cells.
 /// @param cells The container of cells.
 /// @return A container of vertices in the cells
-[[nodiscard]] auto get_vertices(Cell_container const& cells)
+[[nodiscard]] inline auto get_vertices(Cell_container const& cells)
 {
   std::unordered_set<Vertex_handle> vertices;
   auto get_vertices = [&vertices](auto const& cell) {
@@ -158,9 +158,8 @@ inline void print_edge(Edge_handle const& edge)
   return result;
 }  // get_vertices()
 
-[[nodiscard]] auto index_of_vertex_in_opposite_simplex(Delaunay& triangulation,
-                                                       Cell_handle cell,
-                                                       int         index) -> int
+[[nodiscard]] inline auto index_of_vertex_in_opposite_simplex(
+    Delaunay& triangulation, Cell_handle cell, int index) -> int
 {
   //  auto neighboring_cell = cell->neighbor(index);
   return triangulation.mirror_index(cell, index);
