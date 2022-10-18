@@ -4,11 +4,12 @@
 /// @details Test functions defined in bistellar_flip.hpp
 /// @date 2022-10-17
 
-#include <CGAL/Tetrahedral_remeshing/internal/flip_edges.h>
+// clang-format off
 #include <doctest/doctest.h>
-
 #include <CGAL/boost/bimap.hpp>
+#include <CGAL/Tetrahedral_remeshing/internal/flip_edges.h>
 #include <numbers>
+// clang-format on
 
 #include "bistellar_flip.hpp"
 
