@@ -19,7 +19,8 @@
 
 #include "bistellar_flip.hpp"
 
-static inline auto constexpr SQRT_2     = std::numbers::sqrt2_v<double>;
+static inline std::floating_point auto constexpr SQRT_2 =
+    std::numbers::sqrt2_v<double>;
 static inline auto constexpr INV_SQRT_2 = 1.0 / SQRT_2;
 
 using CellsSmallVector = boost::container::small_vector<Cell_handle, 64>;
