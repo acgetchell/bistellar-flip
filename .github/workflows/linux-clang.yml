@@ -15,7 +15,7 @@ jobs:
       - name: Setup Clang
         uses: egor-tensin/setup-clang@v1
         with:
-          version: latest
+          version: 14
           platform: x64
 
       - name: Setup
@@ -25,7 +25,7 @@ jobs:
       - name: Restore artifacts, or setup vcpkg
         uses: lukka/run-vcpkg@v10
         with:
-          vcpkgGitCommitId: ec7216c8e1206580ccec7a33024ef38216efdaf8
+          vcpkgGitCommitId: e79c0d2b5d72eb3063cf32a1f7de1a9cf19930f3
 
       - name: Install vcpkg packages and configure CMake
         shell: bash
