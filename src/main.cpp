@@ -4,9 +4,9 @@
 /// @details Show how to use the bistellar_flip functions on a 3D triangulation.
 /// @date Created: 2022-06-19
 
-#include <cstdlib>
+#include <fmt/core.h>
 
-#include "bistellar_flip.hpp"
+#include <cstdlib>
 
 int main()
 {

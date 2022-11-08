@@ -10,17 +10,31 @@
 #ifndef BISTELLAR_FLIP_BISTELLAR_FLIP_HPP
 #define BISTELLAR_FLIP_BISTELLAR_FLIP_HPP
 
-#include <CGAL/circulator.h>
+#include <assert.h>
+#include <CGAL/assertions.h>
+#include <CGAL/Compact_container.h>
 #include <CGAL/Delaunay_triangulation_3.h>
+#include <CGAL/enum.h>
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+#include <CGAL/Filtered_kernel.h>
+#include <CGAL/Interval_nt.h>
+#include <CGAL/iterator.h>
+#include <CGAL/Mpzf.h>
+#include <CGAL/Point_3.h>
 #include <CGAL/Triangulation_cell_base_with_info_3.h>
+#include <CGAL/Triangulation_data_structure_3.h>
 #include <CGAL/Triangulation_vertex_base_with_info_3.h>
-#include <fmt/format.h>
+#include <CGAL/utility.h>
+#include <fmt/core.h>
 
+#include <algorithm>
+#include <boost/container/small_vector.hpp>
+#include <boost/container/vector.hpp>
 #include <iostream>
 #include <optional>
-#include <sstream>
 #include <string>
+#include <unordered_set>
+#include <vector>
 
 using K   = CGAL::Exact_predicates_inexact_constructions_kernel;
 using Vb  = CGAL::Triangulation_vertex_base_with_info_3<int, K>;
@@ -184,10 +198,10 @@ inline void print_edge(Edge_handle const& edge)
   if (!incident_cells || incident_cells->size() != 4) { return std::nullopt; }
 
   // Check incident cells are valid
-//  for (auto const& cell : incident_cells.value())
-//  {
-//    if (!cell->is_valid()) { return std::nullopt; }
-//  }
+  //  for (auto const& cell : incident_cells.value())
+  //  {
+  //    if (!cell->is_valid()) { return std::nullopt; }
+  //  }
   if (std::any_of(incident_cells->begin(), incident_cells->end(),
                   [](auto const& cell) { return !cell->is_valid(); }))
   {
@@ -285,42 +299,50 @@ inline void print_edge(Edge_handle const& edge)
   after_4->set_neighbors(n_6, n_7, after_2, after_3);
 
   // Now set the neighboring cells to the new cells
-//  n_1->set_neighbor(n_1->index(triangulation.tds().mirror_vertex(
-//                        after_1, after_1->index(pivot_to_2))),
-//                    after_1);
-//  n_2->set_neighbor(n_2->index(triangulation.tds().mirror_vertex(
-//                        after_2, after_2->index(pivot_to_2))),
-//                    after_2);
-//  n_3->set_neighbor(n_3->index(triangulation.tds().mirror_vertex(
-//                        after_2, after_2->index(pivot_to_1))),
-//                    after_2);
-//  n_4->set_neighbor(n_4->index(triangulation.tds().mirror_vertex(
-//                        after_1, after_1->index(pivot_to_1))),
-//                    after_1);
-//  n_5->set_neighbor(n_5->index(triangulation.tds().mirror_vertex(
-//                        after_3, after_3->index(pivot_to_2))),
-//                    after_3);
-//  n_6->set_neighbor(n_6->index(triangulation.tds().mirror_vertex(
-//                        after_4, after_4->index(pivot_to_2))),
-//                    after_4);
-//  n_7->set_neighbor(n_7->index(triangulation.tds().mirror_vertex(
-//                        after_4, after_4->index(pivot_to_1))),
-//                    after_4);
-//  n_8->set_neighbor(n_8->index(triangulation.tds().mirror_vertex(
-//                        after_3, after_3->index(pivot_to_1))),
-//                    after_3);
+  //  n_1->set_neighbor(n_1->index(triangulation.tds().mirror_vertex(
+  //                        after_1, after_1->index(pivot_to_2))),
+  //                    after_1);
+  //  n_2->set_neighbor(n_2->index(triangulation.tds().mirror_vertex(
+  //                        after_2, after_2->index(pivot_to_2))),
+  //                    after_2);
+  //  n_3->set_neighbor(n_3->index(triangulation.tds().mirror_vertex(
+  //                        after_2, after_2->index(pivot_to_1))),
+  //                    after_2);
+  //  n_4->set_neighbor(n_4->index(triangulation.tds().mirror_vertex(
+  //                        after_1, after_1->index(pivot_to_1))),
+  //                    after_1);
+  //  n_5->set_neighbor(n_5->index(triangulation.tds().mirror_vertex(
+  //                        after_3, after_3->index(pivot_to_2))),
+  //                    after_3);
+  //  n_6->set_neighbor(n_6->index(triangulation.tds().mirror_vertex(
+  //                        after_4, after_4->index(pivot_to_2))),
+  //                    after_4);
+  //  n_7->set_neighbor(n_7->index(triangulation.tds().mirror_vertex(
+  //                        after_4, after_4->index(pivot_to_1))),
+  //                    after_4);
+  //  n_8->set_neighbor(n_8->index(triangulation.tds().mirror_vertex(
+  //                        after_3, after_3->index(pivot_to_1))),
+  //                    after_3);
 
   // Alternative way to set the neighbors
-//  auto mirror_index = triangulation.tds().mirror_index(before_1, before_1->index(pivot_from_2));
-//  n_1->set_neighbor(mirror_index, after_1);
-//  n_1->set_neighbor(triangulation.tds().mirror_index(before_1, before_1->index(pivot_from_2)), after_1);
-//  n_2->set_neighbor(triangulation.tds().mirror_index(before_1, before_1->index(pivot_from_1)), after_2);
-//  n_3->set_neighbor(triangulation.tds().mirror_index(before_2, before_2->index(pivot_from_1)), after_2);
-//  n_4->set_neighbor(triangulation.tds().mirror_index(before_2, before_2->index(pivot_from_2)), after_1);
-//  n_5->set_neighbor(triangulation.tds().mirror_index(before_3, before_3->index(pivot_from_2)), after_3);
-//  n_6->set_neighbor(triangulation.tds().mirror_index(before_3, before_3->index(pivot_from_1)), after_4);
-//  n_7->set_neighbor(triangulation.tds().mirror_index(before_4, before_4->index(pivot_from_1)), after_4);
-//  n_8->set_neighbor(triangulation.tds().mirror_index(before_4, before_4->index(pivot_from_2)), after_3);
+  //  auto mirror_index = triangulation.tds().mirror_index(before_1,
+  //  before_1->index(pivot_from_2)); n_1->set_neighbor(mirror_index, after_1);
+  //  n_1->set_neighbor(triangulation.tds().mirror_index(before_1,
+  //  before_1->index(pivot_from_2)), after_1);
+  //  n_2->set_neighbor(triangulation.tds().mirror_index(before_1,
+  //  before_1->index(pivot_from_1)), after_2);
+  //  n_3->set_neighbor(triangulation.tds().mirror_index(before_2,
+  //  before_2->index(pivot_from_1)), after_2);
+  //  n_4->set_neighbor(triangulation.tds().mirror_index(before_2,
+  //  before_2->index(pivot_from_2)), after_1);
+  //  n_5->set_neighbor(triangulation.tds().mirror_index(before_3,
+  //  before_3->index(pivot_from_2)), after_3);
+  //  n_6->set_neighbor(triangulation.tds().mirror_index(before_3,
+  //  before_3->index(pivot_from_1)), after_4);
+  //  n_7->set_neighbor(triangulation.tds().mirror_index(before_4,
+  //  before_4->index(pivot_from_1)), after_4);
+  //  n_8->set_neighbor(triangulation.tds().mirror_index(before_4,
+  //  before_4->index(pivot_from_2)), after_3);
 
   // Okay, we'll need to test each before and after cell to see if we
   // get the n_x's right

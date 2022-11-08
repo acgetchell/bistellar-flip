@@ -6,7 +6,9 @@
 
 #include "bistellar_flip.hpp"
 
+#include <CGAL/Kernel/global_functions_3.h>
 #include <doctest/doctest.h>
+#include <gmpxx.h>
 
 #include <numbers>
 

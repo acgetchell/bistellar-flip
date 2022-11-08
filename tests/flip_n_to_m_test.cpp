@@ -6,16 +6,32 @@
 
 // clang-format off
 #include <CGAL/boost/bimap.hpp>
+// clang-format on
+#include <CGAL/assertions.h>
+#include <CGAL/Compact_container.h>
+#include <CGAL/enum.h>
+#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+#include <CGAL/Interval_nt.h>
+#include <CGAL/Kernel/Type_equality_wrapper.h>
+#include <CGAL/Mesh_cell_base_3.h>
+#include <CGAL/Mesh_vertex_base_3.h>
+#include <CGAL/Mpzf.h>
+#include <CGAL/Point_3.h>
 #include <CGAL/Tetrahedral_remeshing/internal/flip_edges.h>
 #include <CGAL/Tetrahedral_remeshing/internal/tetrahedral_adaptive_remeshing_impl.h>
-// clang-format on
 #include <CGAL/Tetrahedral_remeshing/Remeshing_triangulation_3.h>
-//#include <CGAL/tetrahedron_soup_to_triangulation_3.h>
-
+#include <CGAL/Triangulation_data_structure_3.h>
 #include <doctest/doctest.h>
+#include <fmt/core.h>
 
-#include <boost/optional/optional_io.hpp>
+#include <boost/container/small_vector.hpp>
+#include <boost/container/vector.hpp>
+#include <boost/optional/optional.hpp>
+#include <iterator>
 #include <numbers>
+#include <optional>
+#include <unordered_map>
+#include <vector>
 
 #include "bistellar_flip.hpp"
 

@@ -2,6 +2,8 @@
 
 Bistellar flip proposal for [CGAL].
 
+Uses the [CGAL] library to compute the bistellar flip of a given triangulation.
+
 ## Description
 
 A bistellar flip operates on 4 cells in a 3-dimensional [Triangulation_data_structure].

@@ -6,15 +6,27 @@
 /// versions so that we can use the CGAL::flip_n_to_m function.
 /// @date 2022-10-20
 
+#include <CGAL/assertions.h>
+#include <CGAL/Cartesian_converter.h>
+#include <CGAL/Compact_container.h>
+#include <CGAL/enum.h>
+#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+#include <CGAL/Interval_nt.h>
+#include <CGAL/Mesh_complex_3_in_triangulation_3.h>
+#include <CGAL/Mpzf.h>
+#include <CGAL/Point_3.h>
+#include <CGAL/Tetrahedral_remeshing/Remeshing_triangulation_3.h>
 #include <doctest/doctest.h>
 
+#include <boost/container/small_vector.hpp>
+#include <boost/container/vector.hpp>
 #include <numbers>
-#include <CGAL/Tetrahedral_remeshing/Remeshing_triangulation_3.h>
-#include <CGAL/Mesh_complex_3_in_triangulation_3.h>
-//#include <CGAL/SMDS_3/tetrahedron_soup_to_mesh.h>
+#include <vector>
+
 #include "bistellar_flip.hpp"
 
-using Remeshing_triangulation = CGAL::Tetrahedral_remeshing::Remeshing_triangulation_3<K>;
+using Remeshing_triangulation =
+    CGAL::Tetrahedral_remeshing::Remeshing_triangulation_3<K>;
 using C3T3 = CGAL::Mesh_complex_3_in_triangulation_3<Remeshing_triangulation>;
 
 static inline std::floating_point auto constexpr SQRT_2 =
@@ -37,8 +49,9 @@ SCENARIO("Perform bistellar flip on Delaunay triangulation using CGAL " *
     };
     Delaunay triangulation(points.begin(), points.end());
     CHECK(triangulation.is_valid());
-//    Remeshing_triangulation tr = CGAL::tetrahedron_soup_to_triangulation_3<Remeshing_triangulation>(triangulation.tds().finite_edges_begin(), triangulation.tds().finite_edges_end());
-//    C3T3 c3t3;
-//    c3t3.triangulation() = tr;
+    //    Remeshing_triangulation tr =
+    //    CGAL::tetrahedron_soup_to_triangulation_3<Remeshing_triangulation>(triangulation.tds().finite_edges_begin(),
+    //    triangulation.tds().finite_edges_end()); C3T3 c3t3;
+    //    c3t3.triangulation() = tr;
   }
 }
