@@ -5,7 +5,9 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   build:
     runs-on: windows-latest
-    triplet: x64-windows
+
+    env:
+      VCPKG_DEFAULT_TRIPLET: x64-windows
 
     steps:
       - uses: actions/checkout@v2
